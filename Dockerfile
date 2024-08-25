@@ -5,23 +5,24 @@ ENV ARIANG_VERSION=1.3.7 \
   CONF_DIR="/config" \
   UMASK="0002" \
   TZ="Etc/UTC" \
-  RPC_SECRET="nothingfancy" \
-  ARIA_SESSION_FILE="${CONF_DIR}/aria2.session"
+  RPC_SECRET="nothingfancy" 
+
+ENV ARIA_SESSION_FILE="${CONF_DIR}/aria2.session"
 
 USER root
 
 RUN \
-  apk add --no-cache aria2 caddy \
+  apk add --no-cache aria2=1.37.0-r0 caddy=2.7.6-r7 \
   && rm -rf \
-    /root/.cache \
-    /tmp/*
+  /root/.cache \
+  /tmp/*
 
 WORKDIR /usr/local/www/ariang
-RUN wget --no-check-certificate https://github.com/mayswind/AriaNg/releases/download/${ARIANG_VERSION}/AriaNg-${ARIANG_VERSION}.zip \
-  -O ariang.zip  \
-  && unzip ariang.zip \ 
-  && rm ariang.zip \
-  && chmod -R 755 ./
+RUN wget -q --no-check-certificate https://github.com/mayswind/AriaNg/releases/download/${ARIANG_VERSION}/AriaNg-${ARIANG_VERSION}.zip \
+  -O ariang.zip  && \
+  unzip ariang.zip && \
+  rm ariang.zip && \
+  chmod -R 755 ./
 
 COPY Caddyfile /usr/local/caddy/
 COPY aria2.conf ${CONF_DIR}/aria2.conf
