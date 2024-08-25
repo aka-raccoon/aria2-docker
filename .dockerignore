@@ -1,0 +1,7 @@
+# Ignore everything
+*
+
+# Allow files and directories
+!/aria2.conf
+!/Caddyfile
+!entrypoint.sh
